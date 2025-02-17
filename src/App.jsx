@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_URL = "https://tu-api.railway.app"; // Usa la URL de Railway
+const API_URL = "https://lactadunaback-production.up.railway.app"; // Usa la URL de Railway
 
 function App() {
     const [lactancia, setLactancia] = useState([]);
