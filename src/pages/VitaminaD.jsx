@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import { Link } from "react-router-dom";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -14,7 +19,7 @@ function VitaminaD() {
 
   const agregarRegistro = async () => {
     try {
-      const nuevaFecha = dayjs().format("YYYY-MM-DD HH:mm:ss");
+      const nuevaFecha = dayjs().utc().format(); // Guardar en UTC
 
       const datos = { fecha_hora: nuevaFecha };
 
@@ -38,6 +43,10 @@ function VitaminaD() {
       console.error("❌ Error al eliminar vitamina D:", error);
       alert("Hubo un error al eliminar el registro.");
     }
+  };
+
+  const convertirHora = (fechaUTC) => {
+    return dayjs.utc(fechaUTC).tz("Europe/Madrid").format("HH:mm");
   };
 
   return (
@@ -98,7 +107,7 @@ function VitaminaD() {
                     <tbody>
                       {items.map((item) => (
                         <tr key={item.id}>
-                          <td>{dayjs(item.fecha_hora).format("HH:mm")}</td>
+                          <td>{convertirHora(item.fecha_hora)}</td>
                           <td>
                             <button
                               className="btn btn-danger btn-sm"

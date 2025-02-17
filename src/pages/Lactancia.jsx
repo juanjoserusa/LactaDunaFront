@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import { Link } from "react-router-dom";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -17,7 +22,7 @@ function Lactancia() {
 
   const agregarRegistro = async () => {
     try {
-      const nuevaFecha = dayjs().format("YYYY-MM-DD HH:mm:ss");
+      const nuevaFecha = dayjs().utc().format(); // Guardar en UTC
 
       const datos = {
         tipo,
@@ -37,7 +42,6 @@ function Lactancia() {
       const res = await axios.get(`${API_URL}/lactancia`);
       setRegistros(res.data);
 
-      // Limpiar los campos después de agregar un registro
       setTipo("");
       setCantidad("");
       setTiempo("");
@@ -57,11 +61,14 @@ function Lactancia() {
     }
   };
 
+  const convertirHora = (fechaUTC) => {
+    return dayjs.utc(fechaUTC).tz("Europe/Madrid").format("HH:mm");
+  };
+
   return (
     <div className="container mt-4">
       <h2 className="text-center">Registro de Lactancia</h2>
 
-      {/* Formulario para agregar registros */}
       <div className="card p-3 shadow-sm mt-4">
         <h4>Nuevo Registro</h4>
         <div className="mb-2">
@@ -110,14 +117,12 @@ function Lactancia() {
         </button>
       </div>
 
-      {/* Botón para volver a Home */}
       <div className="mt-3 text-center">
         <Link to="/" className="btn btn-secondary">
           ⬅ Volver a Home
         </Link>
       </div>
 
-      {/* Mostrar los registros agrupados por día en una tabla */}
       <div className="mt-4">
         <h3>Histórico</h3>
         {Object.entries(
@@ -161,7 +166,7 @@ function Lactancia() {
                     <tbody>
                       {items.map((item) => (
                         <tr key={item.id}>
-                          <td>{dayjs(item.fecha_hora).format("HH:mm")}</td> {/* Extrae solo HH:mm */}
+                          <td>{convertirHora(item.fecha_hora)}</td>
                           <td>{item.tipo}</td>
                           <td>
                             {item.cantidad
