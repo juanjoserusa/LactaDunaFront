@@ -99,7 +99,7 @@ function Home() {
                 <Link to="/peso" className="btn btn-danger btn-lg py-3 fw-bold shadow rounded">
                     ⚖️ Peso
                 </Link>
-                <Link to="/citas" className="btn btn-secondary btn-lg py-3 fw-bold shadow rounded">
+                <Link to="/citas" className="btn btn-secondary btn-lg py-3 fw-bold shadow rounded mb-5">
                     📅 Citas
                 </Link>
             </div>
