@@ -181,7 +181,26 @@ function Lactancia() {
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content p-3">
               <h4>Editar Registro</h4>
-              {/* Modal con inputs */}
+              <label className="form-label mt-2">Tipo</label>
+              <select className="form-control" value={editando.tipo} onChange={(e) => setEditando({ ...editando, tipo: e.target.value })}>
+                <option value="pecho izquierdo">Pecho Izquierdo</option>
+                <option value="pecho derecho">Pecho Derecho</option>
+                <option value="leche materna externa">Leche Materna Externa</option>
+                <option value="leche de fórmula">Leche de Fórmula</option>
+              </select>
+
+              <label className="form-label mt-2">Fecha y Hora</label>
+              <input type="datetime-local" className="form-control" value={editando.fecha_hora} onChange={(e) => setEditando({ ...editando, fecha_hora: e.target.value })} />
+
+              {editando.tipo.includes("pecho") && (
+                <input type="number" className="form-control mt-2" placeholder="Tiempo (min)" value={editando.tiempo} onChange={(e) => setEditando({ ...editando, tiempo: e.target.value })} />
+              )}
+              {(editando.tipo.includes("materna") || editando.tipo.includes("fórmula")) && (
+                <input type="number" className="form-control mt-2" placeholder="Cantidad (ml)" value={editando.cantidad} onChange={(e) => setEditando({ ...editando, cantidad: e.target.value })} />
+              )}
+              
+
+              <button className="btn btn-success mt-3" onClick={actualizarRegistro}>Guardar</button>
               <button className="btn btn-secondary mt-2" onClick={() => setShowModal(false)}>Cancelar</button>
             </div>
           </div>

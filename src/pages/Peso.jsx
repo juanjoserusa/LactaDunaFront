@@ -53,27 +53,31 @@ function Peso() {
   const abrirModalEdicion = (registro) => {
     setEditando({
       ...registro,
-      fecha: dayjs.utc(registro.fecha).tz("Europe/Madrid").format("YYYY-MM-DDTHH:mm"),
+      fecha: dayjs.utc(registro.fecha).format("YYYY-MM-DDTHH:mm"), // Formato correcto para input datetime-local
       peso: registro.peso,
     });
     setShowModal(true);
-  };
+};
 
-  const actualizarRegistro = async () => {
-    try {
+const actualizarRegistro = async () => {
+  try {
+      const fechaLocal = dayjs(editando.fecha).format("YYYY-MM-DD HH:mm:ss"); // ✅ Convertir a formato correcto
+
       await axios.put(`${API_URL}/peso_bebe/${editando.id}`, {
-        fecha: dayjs(editando.fecha).utc().format(),
-        peso: parseFloat(editando.peso).toFixed(3),
+          fecha: fechaLocal,
+          peso: parseFloat(editando.peso).toFixed(3),
       });
 
       const res = await axios.get(`${API_URL}/peso_bebe`);
       setRegistros(res.data);
       setShowModal(false);
-    } catch (error) {
+  } catch (error) {
       console.error("❌ Error al actualizar peso:", error);
       alert("Hubo un error al actualizar el registro.");
-    }
-  };
+  }
+};
+
+
 
   return (
     <div className="container mt-4">

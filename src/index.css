@@ -44,3 +44,18 @@
     background-color: white !important;
   }
   
+  .lactancia-card {
+    background-color: #f8f9fa; /* Fondo claro */
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .lactancia-card h5 {
+    color: #333;
+  }
+  
+  .lactancia-card .d-flex {
+    font-size: 1.1rem;
+    margin-top: 5px;
+  }

@@ -32,7 +32,7 @@ function Home() {
             {/* 🔹 Recordatorios */}
             <div className="card p-3 shadow-sm mt-4">
         <h4 className="fw-bold">
-          <span role="img" aria-label="alarma">🔔</span> Recordatorios
+          <span role="img" aria-label="alarma">🔔</span> Recordatorios <span role="img" aria-label="alarma">🔔</span>
         </h4>
         
         <div className="d-flex justify-content-center gap-4 mt-2">
@@ -49,29 +49,55 @@ function Home() {
           </div>
         </div>
 
-        {/* Última Lactancia */}
         {recordatorios?.lactancia_ultima && (
-          <div className="mt-3">
-            <h5 className="fw-bold">Última lactancia</h5>
-            <p className="mb-0">
-              <strong>Hora:</strong> {dayjs.utc(recordatorios.lactancia_ultima.fecha_hora).tz("Europe/Madrid").format("HH:mm")}
-            </p>
-            <p className="mb-0">
-              <strong>Tipo:</strong> {recordatorios.lactancia_ultima.tipo}
-            </p>
-            {recordatorios.lactancia_ultima.tipo.includes("pecho") ? (
-              <p><strong>Duración:</strong> {recordatorios.lactancia_ultima.tiempo} min</p>
-            ) : (
-              <p><strong>Cantidad:</strong> {recordatorios.lactancia_ultima.cantidad} ml</p>
-            )}
-          </div>
-        )}
+  <div className="mt-3 p-3 lactancia-card">
+    <h5 className="fw-bold text-center">🍼 Última lactancia 🍼</h5>
+    <hr />
+    <div className="d-flex align-items-center">
+      <span className="fw-bold">📅 Hora:</span>
+      <span className="ms-2">{dayjs.utc(recordatorios.lactancia_ultima.fecha_hora).tz("Europe/Madrid").format("HH:mm")}</span>
+    </div>
+
+    {/* Calcular la próxima toma */}
+    <div className="d-flex align-items-center">
+      <span className="fw-bold text-success">⏰ Próxima toma:</span>
+      <span className="ms-2 text-success">
+        {dayjs.utc(recordatorios.lactancia_ultima.fecha_hora).tz("Europe/Madrid").add(2, "hour").format("HH:mm")} - 
+        {dayjs.utc(recordatorios.lactancia_ultima.fecha_hora).tz("Europe/Madrid").add(3, "hour").format("HH:mm")}
+      </span>
+    </div>
+
+    {/* Convertir solo la primera palabra a Capitalize */}
+    <div className="d-flex align-items-center">
+      <span className="fw-bold">🍼 Tipo:</span>
+      <span className="ms-2">
+        {recordatorios.lactancia_ultima.tipo.charAt(0).toUpperCase() + recordatorios.lactancia_ultima.tipo.slice(1).toLowerCase()}
+      </span>
+    </div>
+
+    {recordatorios.lactancia_ultima.tipo.includes("pecho") ? (
+      <div className="d-flex align-items-center">
+        <span className="fw-bold">⏳ Duración:</span>
+        <span className="ms-2">{recordatorios.lactancia_ultima.tiempo} min</span>
+      </div>
+    ) : (
+      <div className="d-flex align-items-center">
+        <span className="fw-bold">🍼 Cantidad:</span>
+        <span className="ms-2">{recordatorios.lactancia_ultima.cantidad} ml</span>
+      </div>
+    )}
+  </div>
+)}
+
+
+
+
       </div>
 
             {/* 🔹 Próximas citas */}
             {recordatorios.citas_proximas.length > 0 && (
                 <div className="card p-3 shadow-sm mt-4">
-                    <h4>📅 Citas Próximas</h4>
+                    <h4>📅 Próximas Citas 📅</h4>
                     <ul className="list-group">
                         {recordatorios.citas_proximas.map((cita) => (
                             <li key={cita.id} className="list-group-item">
@@ -87,20 +113,22 @@ function Home() {
                 <Link to="/lactancia" className="btn btn-primary btn-lg py-3 fw-bold shadow rounded">
                     🍼 Lactancia
                 </Link>
-                <Link to="/panales" className="btn btn-success btn-lg py-3 fw-bold shadow rounded">
-                    👶 Pañales
-                </Link>
+                
                 <Link to="/banos" className="btn btn-info btn-lg py-3 fw-bold shadow rounded">
                     🛁 Baños
                 </Link>
+                
                 <Link to="/vitamina-d" className="btn btn-warning btn-lg py-3 fw-bold shadow rounded">
                     💊 Vitamina D
+                </Link>
+                <Link to="/citas" className="btn btn-secondary btn-lg py-3 fw-bold shadow rounded ">
+                    📅 Citas
                 </Link>
                 <Link to="/peso" className="btn btn-danger btn-lg py-3 fw-bold shadow rounded">
                     ⚖️ Peso
                 </Link>
-                <Link to="/citas" className="btn btn-secondary btn-lg py-3 fw-bold shadow rounded mb-5">
-                    📅 Citas
+                <Link to="/panales" className="btn btn-success btn-lg py-3 fw-bold shadow rounded mb-5">
+                    👶 Pañales
                 </Link>
             </div>
         </div>
