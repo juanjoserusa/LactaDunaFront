@@ -78,12 +78,12 @@ function Home() {
     {recordatorios.lactancia_ultima.tipo.includes("pecho") ? (
       <div className="d-flex align-items-center">
         <span className="fw-bold">⏳ Duración:</span>
-        <span className="ms-2">{recordatorios.lactancia_ultima.tiempo} min</span>
+        <span className="ms-2">{recordatorios.lactancia_ultima.tiempo} min.</span>
       </div>
     ) : (
       <div className="d-flex align-items-center">
         <span className="fw-bold">🍼 Cantidad:</span>
-        <span className="ms-2">{recordatorios.lactancia_ultima.cantidad} ml</span>
+        <span className="ms-2">{recordatorios.lactancia_ultima.cantidad} ml.</span>
       </div>
     )}
   </div>
