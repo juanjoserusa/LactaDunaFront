@@ -8,6 +8,8 @@ import VitaminaD from "./pages/VitaminaD";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import Baños from "./pages/Baños";
+import Peso from "./pages/Peso";
+import Citas from "./pages/Citas";
 
 const root = document.getElementById("root");
 
@@ -20,6 +22,8 @@ ReactDOM.createRoot(root).render(
                 <Route path="/panales" element={<Panales />} />
                 <Route path="/vitamina-d" element={<VitaminaD />} />
                 <Route path="/banos" element={<Baños />} />
+                <Route path="/peso" element={<Peso />} />
+                <Route path="/citas" element={<Citas/>} />
             </Routes>
         </Router>
     </React.StrictMode>

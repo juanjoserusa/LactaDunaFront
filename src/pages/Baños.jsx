@@ -12,6 +12,8 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 function Banos() {
   const [registros, setRegistros] = useState([]);
+  const [editando, setEditando] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     axios.get(`${API_URL}/banos`).then((res) => setRegistros(res.data));
@@ -45,8 +47,27 @@ function Banos() {
     }
   };
 
-  const convertirHora = (fechaUTC) => {
-    return dayjs.utc(fechaUTC).tz("Europe/Madrid").format("HH:mm");
+  const abrirModalEdicion = (registro) => {
+    setEditando({
+      ...registro,
+      fecha_hora: dayjs.utc(registro.fecha_hora).tz("Europe/Madrid").format("YYYY-MM-DDTHH:mm"),
+    });
+    setShowModal(true);
+  };
+
+  const actualizarRegistro = async () => {
+    try {
+      await axios.put(`${API_URL}/banos/${editando.id}`, {
+        fecha_hora: dayjs(editando.fecha_hora).utc().format(),
+      });
+
+      const res = await axios.get(`${API_URL}/banos`);
+      setRegistros(res.data);
+      setShowModal(false);
+    } catch (error) {
+      console.error("❌ Error al actualizar baño:", error);
+      alert("Hubo un error al actualizar el registro.");
+    }
   };
 
   return (
@@ -107,14 +128,16 @@ function Banos() {
                     <tbody>
                       {items.map((item) => (
                         <tr key={item.id}>
-                          <td>{convertirHora(item.fecha_hora)}</td>
+                          <td>{dayjs.utc(item.fecha_hora).tz("Europe/Madrid").format("HH:mm")}</td>
                           <td>
-                            <button
-                              className="btn btn-danger btn-sm"
-                              onClick={() => eliminarRegistro(item.id)}
-                            >
-                              🗑️
-                            </button>
+                            <div className="d-flex justify-content-center gap-2">
+                              <button className="btn btn-warning btn-sm" onClick={() => abrirModalEdicion(item)}>
+                                ✏️
+                              </button>
+                              <button className="btn btn-danger btn-sm" onClick={() => eliminarRegistro(item.id)}>
+                                🗑️
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))}
@@ -126,6 +149,32 @@ function Banos() {
           </div>
         ))}
       </div>
+
+      {showModal && (
+        <div className="modal fade show d-block" style={{ background: "rgba(0,0,0,0.5)" }}>
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content p-3">
+              <h4 className="text-center">Editar Registro</h4>
+              <label className="form-label mt-2">Fecha y Hora</label>
+              <input
+                type="datetime-local"
+                className="form-control"
+                value={editando.fecha_hora}
+                onChange={(e) => setEditando({ ...editando, fecha_hora: e.target.value })}
+              />
+
+              <div className="d-flex justify-content-between mt-3">
+                <button className="btn btn-success" onClick={actualizarRegistro}>
+                  Guardar
+                </button>
+                <button className="btn btn-secondary" onClick={() => setShowModal(false)}>
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

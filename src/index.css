@@ -1,0 +1,46 @@
+.cita-marcada {
+    background-color: greenyellow !important; /* Amarillo */
+    color: black !important;
+    font-weight: bold;
+  }
+  .recordatorio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .check-circular {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 3px solid #ccc;
+  }
+  
+  .check-circular.pendiente {
+    background-color: transparent;
+    border-color: red;
+  }
+  
+  .check-circular.completado {
+    background-color: green;
+    border-color: green;
+  }
+
+  .circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid red;
+    display: inline-block;
+  }
+  
+  .bg-success {
+    background-color: green !important;
+    border: none;
+  }
+  
+  .bg-danger {
+    background-color: white !important;
+  }
+  
