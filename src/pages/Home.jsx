@@ -26,7 +26,7 @@ function Home() {
 
     return (
         <div className="container text-center mt-5">
-            <h1 className="fw-bold text-primary">LactaDuna</h1>
+            <h1 className="fw-bold text-primary">MyBabyTime</h1>
             <p className="text-muted">Registro de lactancia y cuidados del bebé</p>
 
             {/* 🔹 Recordatorios */}
