@@ -59,11 +59,17 @@ function Home() {
     </div>
 
     {/* Calcular la próxima toma */}
-    <div className="d-flex align-items-center">
+    <div className="d-flex align-items-start justify-content-start">
       <span className="fw-bold text-success">⏰ Próxima toma:</span>
-      <span className="ms-2 text-success">
-        {dayjs.utc(recordatorios.lactancia_ultima.fecha_hora).tz("Europe/Madrid").add(2, "hour").format("HH:mm")} - 
-        {dayjs.utc(recordatorios.lactancia_ultima.fecha_hora).tz("Europe/Madrid").add(3, "hour").format("HH:mm")}
+      <span className=" ">
+        <div>
+        <span className="ms-2 me-2 text-warning">3h</span>
+        <span className="fw-bold ">{dayjs.utc(recordatorios.lactancia_ultima.fecha_hora).tz("Europe/Madrid").add(3, "hour").format("HH:mm")}</span>
+        </div>
+          <div>
+        <span className="ms-2 me-2 text-danger">4h</span>
+        <span className="fw-bold ">{dayjs.utc(recordatorios.lactancia_ultima.fecha_hora).tz("Europe/Madrid").add(4, "hour").format("HH:mm")}</span>
+          </div>
       </span>
     </div>
 
@@ -108,29 +114,38 @@ function Home() {
                 </div>
             )}
 
-            {/* 🔹 Botones de navegación */}
-            <div className="d-flex flex-column gap-4 mt-5">
-                <Link to="/lactancia" className="btn btn-primary btn-lg py-3 fw-bold shadow rounded">
-                    🍼 Lactancia
-                </Link>
-                
-                <Link to="/banos" className="btn btn-info btn-lg py-3 fw-bold shadow rounded">
-                    🛁 Baños
-                </Link>
-                
-                <Link to="/vitamina-d" className="btn btn-warning btn-lg py-3 fw-bold shadow rounded">
-                    💊 Vitamina D
-                </Link>
-                <Link to="/citas" className="btn btn-secondary btn-lg py-3 fw-bold shadow rounded ">
-                    📅 Citas
-                </Link>
-                <Link to="/peso" className="btn btn-danger btn-lg py-3 fw-bold shadow rounded">
-                    ⚖️ Peso
-                </Link>
-                <Link to="/panales" className="btn btn-success btn-lg py-3 fw-bold shadow rounded mb-5">
-                    👶 Pañales
-                </Link>
-            </div>
+           {/* 🔹 Botones de navegación */}
+<div className="d-flex flex-column gap-4 mt-5">
+  <Link to="/lactancia" className="btn btn-primary btn-lg py-3 fw-bold shadow rounded">
+    🍼 Lactancia
+  </Link>
+
+  {/* NUEVO */}
+  <Link to="/alimentacion" className="btn btn-success btn-lg py-3 fw-bold shadow rounded">
+    🥣 Alimentación Complementaria
+  </Link>
+  <Link to="/alimentacion/exposiciones" className="btn btn-outline-success btn-lg py-3 fw-bold shadow rounded">
+    ✅ Exposiciones alérgenos
+  </Link>
+  <Link to="/alimentacion/recetas" className="btn btn-outline-primary btn-lg py-3 fw-bold shadow rounded">
+    📖 Recetas
+  </Link>
+
+  <Link to="/vitamina-d" className="btn btn-warning btn-lg py-3 fw-bold shadow rounded">
+    💊 Vitamina D
+  </Link>
+  <Link to="/citas" className="btn btn-secondary btn-lg py-3 fw-bold shadow rounded ">
+    📅 Citas
+  </Link>
+  <Link to="/peso" className="btn btn-danger btn-lg py-3 fw-bold shadow rounded mb-5">
+    ⚖️ Peso
+  </Link>
+
+  {/* Quitamos (oculto) */}
+  {/* <Link to="/banos" className="btn btn-info btn-lg py-3 fw-bold shadow rounded">🛁 Baños</Link> */}
+  {/* <Link to="/panales" className="btn btn-success btn-lg py-3 fw-bold shadow rounded">👶 Pañales</Link> */}
+</div>
+
         </div>
     );
 }
