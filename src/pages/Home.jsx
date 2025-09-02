@@ -16,13 +16,11 @@ function Home() {
     necesita_vitamina_d: false,
     lactancia_ultima: null,
     citas_proximas: [],
+    exposiciones_hoy: [], // <- lo esperamos aquí
   });
 
-  // Opcional: exposiciones que tocan hoy (día 2 o 3, o “valorar”)
-  const [exposHoy, setExposHoy] = useState([]);
-  // Para refrescar reloj/elapsed sin pedir a la API constantemente
+  // Para refrescar “hace X min” sin pedir a la API
   const [, forceTick] = useState(0);
-
   const tz = "Europe/Madrid";
 
   const load = async () => {
@@ -32,32 +30,21 @@ function Home() {
     } catch (error) {
       console.error("❌ Error al cargar recordatorios:", error);
     }
-
-    // Si en el futuro expones algo tipo /exposiciones/hoy, lo intentamos.
-    // Si no existe, no pasa nada: no mostramos el bloque.
-    try {
-      const ex = await axios.get(`${API_URL}/exposiciones/hoy`);
-      if (Array.isArray(ex.data)) setExposHoy(ex.data);
-    } catch {
-      setExposHoy([]); // silencioso
-    }
   };
 
   useEffect(() => {
     load();
   }, []);
 
-  // Tick cada 60s para recalcular “hace X minutos” y la barra
+  // Tick cada 60s para recalcular elapsed
   useEffect(() => {
     const id = setInterval(() => forceTick((x) => x + 1), 60_000);
     return () => clearInterval(id);
   }, []);
 
-  // Utilidades de tiempo
+  // ===== Utilidades de tiempo para lactancia =====
   const lastFeed = recordatorios?.lactancia_ultima;
-  const lastFeedLocal = lastFeed
-    ? dayjs.utc(lastFeed.fecha_hora).tz(tz)
-    : null;
+  const lastFeedLocal = lastFeed ? dayjs.utc(lastFeed.fecha_hora).tz(tz) : null;
 
   const now = dayjs().tz(tz);
   const elapsedMin = lastFeedLocal ? Math.max(0, now.diff(lastFeedLocal, "minute")) : 0;
@@ -78,6 +65,10 @@ function Home() {
   const tipoCap = lastFeed?.tipo
     ? lastFeed.tipo.charAt(0).toUpperCase() + lastFeed.tipo.slice(1).toLowerCase()
     : "";
+
+  const exposHoy = Array.isArray(recordatorios.exposiciones_hoy)
+    ? recordatorios.exposiciones_hoy
+    : [];
 
   return (
     <div className="container text-center mt-5">
@@ -132,7 +123,7 @@ function Home() {
           </div> */}
         </div>
 
-        {/* Última lactancia: hora, transcurrido, próximas */}
+        {/* Última lactancia */}
         {lastFeedLocal && (
           <div className="mt-3 p-3 lactancia-card">
             <h5 className="fw-bold text-center">🍼 Última lactancia</h5>
@@ -152,7 +143,7 @@ function Home() {
               </div>
 
               {/* Duración o Cantidad */}
-              {recordatorios.lactancia_ultima.tipo?.includes("pecho") ? (
+              {recordatorios.lactancia_ultima?.tipo?.includes("pecho") ? (
                 <div className="col-12 col-sm-4 d-flex align-items-center">
                   <span className="fw-bold">⏱️ Duración:</span>
                   <span className="ms-2">{recordatorios.lactancia_ultima.tiempo} min.</span>
@@ -190,14 +181,14 @@ function Home() {
           </div>
         )}
 
-        {/* Exposiciones que tocan hoy (solo si hay datos) */}
+        {/* Exposiciones que tocan hoy (si el backend las devuelve) */}
         {exposHoy.length > 0 && (
           <div className="mt-3 p-3" style={{ border: "1px solid #eee", borderRadius: 12 }}>
             <h6 className="fw-bold mb-2">✅ Exposiciones de hoy</h6>
             <div className="d-flex flex-wrap gap-2">
               {exposHoy.map((e) => (
-                <span key={`${e.food_id}-${e.date}`} className="badge text-bg-light">
-                  {e.food_name} · {e.step_label ?? e.step ?? "día?"}
+                <span key={`${e.food_id}-${e.step}-${e.food_name}`} className="badge text-bg-light">
+                  {e.food_name} · {e.step_label ?? (e.step ? `Día ${e.step}/3` : "día?")}
                 </span>
               ))}
             </div>
