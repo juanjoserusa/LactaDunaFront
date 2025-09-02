@@ -59,3 +59,21 @@
     font-size: 1.1rem;
     margin-top: 5px;
   }
+
+  .btn-expos {
+  background-color: #45c9a1; /* verde menta */
+  color: #fff;
+}
+.btn-expos:hover {
+  background-color: #28a189;
+  color: #fff;
+}
+
+.btn-recetas {
+  background-color: #6f42c1; /* morado */
+  color: #fff;
+}
+.btn-recetas:hover {
+  background-color: #5a32a3;
+  color: #fff;
+}

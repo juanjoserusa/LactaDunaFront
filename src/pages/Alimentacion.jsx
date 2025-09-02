@@ -117,7 +117,7 @@ const byDate = useMemo(() => {
       <span key={c.id} className="badge text-bg-light d-inline-flex align-items-center gap-1">
         {c.food_name}
         <button
-          className="btn btn-sm btn-link p-0 text-danger"
+          className="btn btn-danger btn-sm"
           title="Quitar"
           onClick={async (e) => {
             e.stopPropagation();
@@ -125,7 +125,7 @@ const byDate = useMemo(() => {
             await refreshChecks(); // ya la tienes declarada arriba
           }}
         >
-          ×
+          🗑️
         </button>
       </span>
   ))}

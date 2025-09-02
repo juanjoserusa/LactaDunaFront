@@ -188,7 +188,7 @@ export default function AlimentacionExposiciones() {
       {/* Botón borrar este día */}
       {!tolerated && (
         <button
-          className="btn btn-sm btn-link p-0 text-danger"
+          className="btn btn-danger btn-sm"
           title="Borrar exposición de este día"
           onClick={async () => {
             try {
@@ -200,7 +200,7 @@ export default function AlimentacionExposiciones() {
             }
           }}
         >
-          ×
+          🗑️
         </button>
       )}
     </span>

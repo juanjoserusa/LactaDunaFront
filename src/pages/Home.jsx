@@ -124,12 +124,13 @@ function Home() {
   <Link to="/alimentacion" className="btn btn-success btn-lg py-3 fw-bold shadow rounded">
     🥣 Alimentación Complementaria
   </Link>
-  <Link to="/alimentacion/exposiciones" className="btn btn-outline-success btn-lg py-3 fw-bold shadow rounded">
-    ✅ Exposiciones alérgenos
-  </Link>
-  <Link to="/alimentacion/recetas" className="btn btn-outline-primary btn-lg py-3 fw-bold shadow rounded">
-    📖 Recetas
-  </Link>
+ <Link to="/alimentacion/exposiciones" className="btn btn-expos btn-lg py-3 fw-bold shadow rounded">
+  ✅ Exposiciones alérgenos
+</Link>
+
+<Link to="/alimentacion/recetas" className="btn btn-recetas btn-lg py-3 fw-bold shadow rounded">
+  📖 Recetas
+</Link>
 
   <Link to="/vitamina-d" className="btn btn-warning btn-lg py-3 fw-bold shadow rounded">
     💊 Vitamina D
