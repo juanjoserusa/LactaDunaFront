@@ -323,7 +323,7 @@ const [quickTime, setQuickTime] = useState(dayjs().format("HH:mm"));
         <Link to="/" className="btn btn-secondary">⬅ Volver a Home</Link>
       </div>
 
-      {/* ==== BOTÓN DE SEED (USAR UNA SOLA VEZ Y BORRAR) ==== */}
+      {/* ==== BOTÓN DE SEED (USAR UNA SOLA VEZ Y BORRAR) ====
       <div className="alert alert-danger mt-3" role="alert">
         <div className="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2">
           <div>
@@ -333,7 +333,7 @@ const [quickTime, setQuickTime] = useState(dayjs().format("HH:mm"));
             Cargar recetas base (una vez)
           </button>
         </div>
-      </div>
+      </div> */}
 
       {/* CTA nueva receta (opcional) */}
       <div className="mt-3 d-grid">
