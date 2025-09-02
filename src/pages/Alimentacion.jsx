@@ -36,11 +36,16 @@ export default function Alimentacion() {
     [month]
   );
 
-  const byDate = useMemo(() => {
-    const map = {};
-    for (const c of checks) (map[c.date] ||= []).push(c);
-    return map;
-  }, [checks]);
+const byDate = useMemo(() => {
+  const map = {};
+  for (const c of checks) {
+    // normaliza siempre a 'YYYY-MM-DD', venga como venga de la API
+    const key = dayjs(c.date).format("YYYY-MM-DD");
+    const item = { ...c, checked: !!c.checked }; // fuerza boolean
+    (map[key] ||= []).push(item);
+  }
+  return map;
+}, [checks]);
 
   const todayChecks = byDate[today] || [];
   const todayCounts = MEALS.reduce((acc, m) => {
@@ -106,11 +111,26 @@ export default function Alimentacion() {
                   <span className="badge text-bg-light text-muted">x{todayCounts[m.key] || 0}</span>
                 </div>
                 <div className="mt-2 d-flex gap-1 flex-wrap" style={{minHeight: 28}}>
-                  {todayChecks.filter(c => c.meal === m.key && c.checked).map(c => (
-                    <span key={c.id} className="badge text-bg-light">{c.food_name}</span>
-                  ))}
-                  {!(todayCounts[m.key] > 0) && <span className="text-muted small">Sin marcar</span>}
-                </div>
+  {todayChecks
+    .filter(c => c.meal === m.key && c.checked)
+    .map(c => (
+      <span key={c.id} className="badge text-bg-light d-inline-flex align-items-center gap-1">
+        {c.food_name}
+        <button
+          className="btn btn-sm btn-link p-0 text-danger"
+          title="Quitar"
+          onClick={async (e) => {
+            e.stopPropagation();
+            await nutricionApi.setCheck({ date: today, foodId: c.food_id, meal: m.key, checked: false });
+            await refreshChecks(); // ya la tienes declarada arriba
+          }}
+        >
+          ×
+        </button>
+      </span>
+  ))}
+  {!(todayCounts[m.key] > 0) && <span className="text-muted small">Sin marcar</span>}
+</div>
                 <button className="btn btn-primary w-100 mt-2 pill" onClick={() => openSheet(today, m.key)}>
                   {m.label}
                 </button>
@@ -193,7 +213,7 @@ function MonthGrid({ days, byDate, onOpen }) {
       `}</style>
       <div className="grid-days">
         {days.map((d) => {
-          const dc = byDate[d] || [];
+          const dc = (byDate[d] || []).map(c => ({ ...c, checked: !!c.checked }));
           const counts = MEALS.reduce((acc, m) => {
             acc[m.key] = dc.filter((c) => c.meal === m.key && c.checked).length;
             return acc;

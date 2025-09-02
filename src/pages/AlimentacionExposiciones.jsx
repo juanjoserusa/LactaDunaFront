@@ -179,19 +179,33 @@ export default function AlimentacionExposiciones() {
                         )}
                       </div>
                       <div className="d-flex gap-2 flex-wrap mt-2">
-                        {items.map((e, idx) => (
-                          <span
-                            key={e.id}
-                            className={`badge ${
-                              tolerated
-                                ? "text-bg-success"
-                                : "text-bg-light"
-                            } chip`}
-                          >
-                            Día {idx + 1}: {dayjs(e.date).format("DD/MM")}
-                          </span>
-                        ))}
-                      </div>
+  {items.map((e, idx) => (
+    <span
+      key={e.id}
+      className={`badge ${tolerated ? "text-bg-success" : "text-bg-light"} chip d-inline-flex align-items-center gap-2`}
+    >
+      Día {idx + 1}: {dayjs(e.date).format("DD/MM")}
+      {/* Botón borrar este día */}
+      {!tolerated && (
+        <button
+          className="btn btn-sm btn-link p-0 text-danger"
+          title="Borrar exposición de este día"
+          onClick={async () => {
+            try {
+              await nutricionApi.removeExposure({ date: e.date, foodId: e.food_id });
+              await reload();
+            } catch (err) {
+              console.error(err);
+              alert("No se pudo borrar la exposición.");
+            }
+          }}
+        >
+          ×
+        </button>
+      )}
+    </span>
+  ))}
+</div>
                     </div>
 
                     {/* Bloque de valoración exactamente al 3er día */}

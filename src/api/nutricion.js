@@ -21,6 +21,12 @@ export const nutricionApi = {
     return data;
   },
 
+  async removeExposure({ date, foodId }) {
+  const { data } = await http.delete("/exposures", { params: { date, foodId } });
+  return data;
+},
+
+
   // Checks (calendario)
   async checks(month) {
     const { data } = await http.get("/checks", { params: { month } });

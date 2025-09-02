@@ -37,10 +37,10 @@ function Home() {
         
         <div className="d-flex justify-content-center gap-4 mt-2">
           {/* Baño */}
-          <div className="text-center">
+          {/* <div className="text-center">
             <div className={`circle ${recordatorios?.necesita_baño ? "bg-danger" : "bg-success"}`}></div>
             <p className="fw-bold">Baño</p>
-          </div>
+          </div> */}
 
           {/* Vitamina D */}
           <div className="text-center">
